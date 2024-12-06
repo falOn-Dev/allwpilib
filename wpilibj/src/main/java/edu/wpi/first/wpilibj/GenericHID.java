@@ -151,7 +151,9 @@ public class GenericHID {
       }
       buttonAlerts.get(button).set(true);
     } else {
-      buttonAlerts.get(button).set(false);
+      if(buttonAlerts.containsKey(button)){
+        buttonAlerts.get(button).set(false);
+      }
     }
 
     return DriverStation.getStickButton(m_port, (byte) button);
