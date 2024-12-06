@@ -8,6 +8,7 @@
 #include "Alert.h"
 
 #include <string>
+#include <unordered_map>
 
 namespace frc {
 
@@ -373,15 +374,15 @@ class GenericHID {
   int m_outputs = 0;
   uint16_t m_leftRumble = 0;
   uint16_t m_rightRumble = 0;
-  Alert alert {
+  mutable Alert m_disconnectedAlert {
     "JoystickAlerts/" + std::to_string(m_port),
     "Joystick " + std::to_string(m_port) + " is not connected - Check to see if its plugged in",
     Alert::AlertType::kWarning 
   };
 
-  std::unordered_map<int, Alert> m_axisAlerts;
-  std::unordered_map<int, Alert> m_buttonAlerts;
-  std::unordered_map<int, Alert> m_povAlerts;
+  mutable std::unordered_map<int, Alert> m_axisAlerts;
+  mutable std::unordered_map<int, Alert> m_buttonAlerts;
+  mutable std::unordered_map<int, Alert> m_povAlerts;
 };
 
 }  // namespace frc
