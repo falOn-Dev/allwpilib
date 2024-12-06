@@ -22,14 +22,68 @@ GenericHID::GenericHID(int port) {
 }
 
 bool GenericHID::GetRawButton(int button) const {
+  m_disconnectedAlert.Set(!IsConnected());
+
+  if(button > GetButtonCount()) {
+    if(m_buttonAlerts.find(button) == m_buttonAlerts.end()) {
+      m_buttonAlerts[button] = Alert {
+        "JoystickAlerts/" + std::to_string(m_port),
+        "Button " + std::to_string(button) + " does not exist on Joystick " + std::to_string(m_port),
+        Alert::AlertType::kWarning
+      };
+
+    }
+    m_buttonAlerts[button].Set(true);
+  } else {
+    if(m_buttonAlerts.find(button) != m_buttonAlerts.end()) {
+      m_buttonAlerts[button].Set(false);
+    }
+  }
+
   return DriverStation::GetStickButton(m_port, button);
 }
 
 bool GenericHID::GetRawButtonPressed(int button) {
+  m_disconnectedAlert.Set(!IsConnected());
+
+  if(button > GetButtonCount()) {
+    if(m_buttonAlerts.find(button) == m_buttonAlerts.end()) {
+      m_buttonAlerts[button] = Alert {
+        "JoystickAlerts/" + std::to_string(m_port),
+        "Button " + std::to_string(button) + " does not exist on Joystick " + std::to_string(m_port),
+        Alert::AlertType::kWarning
+      };
+
+    }
+    m_buttonAlerts[button].Set(true);
+  } else {
+    if(m_buttonAlerts.find(button) != m_buttonAlerts.end()) {
+      m_buttonAlerts[button].Set(false);
+    }
+  }
+
   return DriverStation::GetStickButtonPressed(m_port, button);
 }
 
 bool GenericHID::GetRawButtonReleased(int button) {
+  m_disconnectedAlert.Set(!IsConnected());
+
+  if(button > GetButtonCount()) {
+    if(m_buttonAlerts.find(button) == m_buttonAlerts.end()) {
+      m_buttonAlerts[button] = Alert {
+        "JoystickAlerts/" + std::to_string(m_port),
+        "Button " + std::to_string(button) + " does not exist on Joystick " + std::to_string(m_port),
+        Alert::AlertType::kWarning
+      };
+
+    }
+    m_buttonAlerts[button].Set(true);
+  } else {
+    if(m_buttonAlerts.find(button) != m_buttonAlerts.end()) {
+      m_buttonAlerts[button].Set(false);
+    }
+  }
+
   return DriverStation::GetStickButtonReleased(m_port, button);
 }
 
@@ -39,10 +93,46 @@ BooleanEvent GenericHID::Button(int button, EventLoop* loop) const {
 }
 
 double GenericHID::GetRawAxis(int axis) const {
+  m_disconnectedAlert.Set(!IsConnected());
+
+  if(axis > GetAxisCount()) {
+    if(m_axisAlerts.find(axis) == m_axisAlerts.end()) {
+      m_axisAlerts[axis] = Alert {
+        "JoystickAlerts/" + std::to_string(m_port),
+        "Axis " + std::to_string(axis) + " does not exist on Joystick " + std::to_string(m_port),
+        Alert::AlertType::kWarning
+      };
+
+    }
+    m_axisAlerts[axis].Set(true);
+  } else {
+    if(m_axisAlerts.find(axis) != m_axisAlerts.end()) {
+      m_axisAlerts[axis].Set(false);
+    }
+  }
+
   return DriverStation::GetStickAxis(m_port, axis);
 }
 
 int GenericHID::GetPOV(int pov) const {
+  m_disconnectedAlert.Set(!IsConnected());
+
+  if(pov > GetPOVCount()) {
+    if(m_povAlerts.find(pov) == m_povAlerts.end()) {
+      m_povAlerts[pov] = Alert {
+        "JoystickAlerts/" + std::to_string(m_port),
+        "POV " + std::to_string(pov) + " does not exist on Joystick " + std::to_string(m_port),
+        Alert::AlertType::kWarning
+      };
+
+    }
+    m_povAlerts[pov].Set(true);
+  } else {
+    if(m_povAlerts.find(pov) != m_povAlerts.end()) {
+      m_povAlerts[pov].Set(false);
+    }
+  }
+
   return DriverStation::GetStickPOV(m_port, pov);
 }
 
