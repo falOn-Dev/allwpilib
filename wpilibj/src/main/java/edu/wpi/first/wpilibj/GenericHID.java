@@ -105,7 +105,7 @@ public class GenericHID {
   private final Map<EventLoop, Map<Pair<Integer, Double>, BooleanEvent>> m_axisGreaterThanCache =
       new HashMap<>();
   private final Map<EventLoop, Map<Integer, BooleanEvent>> m_povCache = new HashMap<>();
-  private final Alert disconnectedAlert;
+  private final Alert m_disconnectedAlert;
   private final Map<Integer, Alert> buttonAlerts = new HashMap<>();
   private final Map<Integer, Alert> povAlerts = new HashMap<>();
   private final Map<Integer, Alert> axisAlerts = new HashMap<>();
@@ -118,7 +118,7 @@ public class GenericHID {
   public GenericHID(int port) {
     m_port = port;
 
-    disconnectedAlert = new Alert(
+    m_disconnectedAlert = new Alert(
     "JoystickAlerts/" + m_port,
      "Joystick " + m_port + " is not connected - Check to see if its plugged in",
      AlertType.kWarning
@@ -138,7 +138,7 @@ public class GenericHID {
    * @return The state of the button.
    */
   public boolean getRawButton(int button) {
-    disconnectedAlert.set(!isConnected());
+    m_disconnectedAlert.set(!isConnected());
     if(button > DriverStation.getStickButtonCount(m_port)) {
       if(!buttonAlerts.containsKey(button)){
         buttonAlerts.put(button,
@@ -168,7 +168,7 @@ public class GenericHID {
    * @return Whether the button was pressed since the last check.
    */
   public boolean getRawButtonPressed(int button) {
-    disconnectedAlert.set(!isConnected());
+    m_disconnectedAlert.set(!isConnected());
     if(button > DriverStation.getStickButtonCount(m_port)) {
       if(!buttonAlerts.containsKey(button)){
         buttonAlerts.put(button,
@@ -201,7 +201,7 @@ public class GenericHID {
    * @return Whether the button was released since the last check.
    */
   public boolean getRawButtonReleased(int button) {
-    disconnectedAlert.set(!isConnected());
+    m_disconnectedAlert.set(!isConnected());
     if(button > DriverStation.getStickButtonCount(m_port)) {
       if(!buttonAlerts.containsKey(button)){
         buttonAlerts.put(button,
@@ -243,7 +243,7 @@ public class GenericHID {
    * @return The value of the axis.
    */
   public double getRawAxis(int axis) {
-    disconnectedAlert.set(!isConnected());
+    m_disconnectedAlert.set(!isConnected());
     if(axis > DriverStation.getStickAxisCount(m_port)) {
       if(!axisAlerts.containsKey(axis)){
         axisAlerts.put(axis,
@@ -274,7 +274,7 @@ public class GenericHID {
    * @return the angle of the POV in degrees, or -1 if the POV is not pressed.
    */
   public int getPOV(int pov) {
-    disconnectedAlert.set(!isConnected());
+    m_disconnectedAlert.set(!isConnected());
     if(pov > DriverStation.getStickPOVCount(m_port)) {
       if(!povAlerts.containsKey(pov)){
         povAlerts.put(pov,
