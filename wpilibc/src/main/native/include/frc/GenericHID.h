@@ -5,6 +5,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "Alert.h"
 
 #include <string>
 
@@ -372,6 +373,15 @@ class GenericHID {
   int m_outputs = 0;
   uint16_t m_leftRumble = 0;
   uint16_t m_rightRumble = 0;
+  Alert alert {
+    "JoystickAlerts/" + std::to_string(m_port),
+    "Joystick " + std::to_string(m_port) + " is not connected - Check to see if its plugged in",
+    Alert::AlertType::kWarning 
+  };
+
+  std::unordered_map<int, Alert> m_axisAlerts;
+  std::unordered_map<int, Alert> m_buttonAlerts;
+  std::unordered_map<int, Alert> m_povAlerts;
 };
 
 }  // namespace frc
