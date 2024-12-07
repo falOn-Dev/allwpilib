@@ -118,15 +118,8 @@ int GenericHID::GetPOV(int pov) const {
   m_disconnectedAlert.Set(!IsConnected());
 
   if(pov > GetPOVCount()) {
-    if(m_povAlerts.find(pov) == m_povAlerts.end()) {
-      m_povAlerts[pov] = Alert {
-        "JoystickAlerts/" + std::to_string(m_port),
-        "POV " + std::to_string(pov) + " does not exist on Joystick " + std::to_string(m_port),
-        Alert::AlertType::kWarning
-      };
-
-    }
-    m_povAlerts[pov].Set(true);
+    auto result = m_povAlerts.try_emplace(pov, "JoystickAlerts/" + std::to_string(m_port), "POV " + std::to_string(pov) + " does not exist on Joystick " + std::to_string(m_port), Alert::AlertType::kWarning);
+    result.first->second.Set(true);
   } else {
     if(m_povAlerts.find(pov) != m_povAlerts.end()) {
       m_povAlerts[pov].Set(false);
